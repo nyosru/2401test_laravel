@@ -4,19 +4,70 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-/**
- * @OA\Info(
- *     title="API Documentation",
- *     version="1.0",
- *     description="Documentation for the API",
- *     @OA\Contact(
- *         email="support@api.com",
- *         name="API Support"
- *     )
- * )
- */
 class ApiController extends Controller
 {
+
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/products",
+     *     operationId="getProducts",
+     *     tags={"Products"},
+     *     summary="Получение списка товаров",
+     *     description="Получение списка товаров с авторизацией по Bearer токену.",
+     *     security={
+     *         {"bearerAuth": {}}
+     *     },
+     *     @OA\Response(
+     *         response=200,
+     *         description="Список товаров успешно получен",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Продукт 1"),
+     *                 @OA\Property(property="price", type="number", format="float", example=19.99),
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Неавторизованный доступ",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", example="Требуется авторизация"),
+     *         ),
+     *     ),
+     * )
+     */
+    public function getProducts()
+    {
+//        $this->middleware('auth:api');
+
+        // Ваша логика получения списка товаров здесь
+
+        // Возвращаем успешный ответ с массивом товаров
+        $products = [
+            ['id' => 1, 'name' => 'Продукт 1', 'price' => 19.99],
+            ['id' => 2, 'name' => 'Продукт 2', 'price' => 29.99],
+            // Дополнительные товары...
+        ];
+
+        return response()->json($products, 200);
+    }
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -40,7 +91,7 @@ class ApiController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -51,7 +102,7 @@ class ApiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -62,7 +113,7 @@ class ApiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -73,8 +124,8 @@ class ApiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -85,15 +136,13 @@ class ApiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
     }
-
-
 
 
     /**
@@ -125,6 +174,9 @@ class ApiController extends Controller
      *     tags={"Item"},
      *     summary="Add an item",
      *     description="Add an item to the system.",
+     *     security={
+     *            {"bearerAuth": {}}
+     *        },
      *     @OA\Response(
      *         response=201,
      *         description="Item added successfully",
