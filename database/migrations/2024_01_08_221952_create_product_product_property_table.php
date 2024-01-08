@@ -13,7 +13,7 @@ class CreateProductProductPropertyTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_product_property', function (Blueprint $table) {
+        Schema::create('product_property_product', function (Blueprint $table) {
             $table->id();
 
 

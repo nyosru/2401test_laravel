@@ -11,6 +11,6 @@ class ProductProperty extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_property_product');
+        return $this->belongsToMany(Product::class, 'product_property_product')->withTimestamps();
     }
 }

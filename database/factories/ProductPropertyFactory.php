@@ -13,8 +13,9 @@ class ProductPropertyFactory extends Factory
      */
     public function definition()
     {
+        $faker = \Faker\Factory::create();
         return [
-            //
+            'name' => 'prop '.$faker->word()
         ];
     }
 }
