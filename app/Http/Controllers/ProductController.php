@@ -12,7 +12,7 @@ class ProductController extends Controller
      * @OA\Get(
      *     path="/api/products",
      *     operationId="getProducts",
-     *     tags={"Products"},
+     *     tags={"Продукты"},
      *     summary="Получение списка товаров",
      *     description="Получение списка товаров с авторизацией по Bearer токену.",
      *     security={
