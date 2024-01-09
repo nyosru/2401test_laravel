@@ -39,6 +39,8 @@
         свагер покликать >
         <a  style="color:blue; text-decoration: underline;" href="https://test2401laravel-vitrin.php-cat.com/api/documentation" target="_blank" >test2401laravel-vitrin.php-cat.com/api/documentation</a>
         <br/>
+        важно: <u>все value это val1 - val10</u>
+        <br/>
         <br/>
         уделите внимание
         <br/>и не выключайте свет
