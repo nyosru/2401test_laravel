@@ -19,11 +19,44 @@ class ProductController extends Controller
      *         {"bearerAuth": {}}
      *     },
      * @OA\Parameter(
+     *          name="responseType",
+     *          in="query",
+     *          description="Поле с ограниченным набором значений",
+     *          required=true,
+     *          @OA\Schema(type="string", enum={"json", "array_mini","showSql"}),
+     *          example="json",
+     *      ),
+     * @OA\Parameter(
      *          name="page",
      *          in="query",
      *          description="Номер страницы",
      *          @OA\Schema(type="integer", format="int32", default=1),
      *      ),
+     *          @OA\Parameter(
+     *          name="property[prop1][]",
+     *          in="query",
+     *          description="Свойства товара",
+     *          @OA\Schema(type="array", @OA\Items(type="string"), collectionFormat="multi", default={"val1", "val2"}),
+     *      ),
+     *          @OA\Parameter(
+     *          name="property[prop2][]",
+     *          in="query",
+     *          description="Свойства товара",
+     *          @OA\Schema(type="array", @OA\Items(type="string"), collectionFormat="multi", default={"val1", "val2"}),
+     *      ),
+     *          @OA\Parameter(
+     *          name="property[prop3][]",
+     *          in="query",
+     *          description="Свойства товара",
+     *          @OA\Schema(type="array", @OA\Items(type="string"), collectionFormat="multi", default={"val1", "val2"}),
+     *      ),
+     *          @OA\Parameter(
+     *          name="property[prop4][]",
+     *          in="query",
+     *          description="Свойства товара",
+     *          @OA\Schema(type="array", @OA\Items(type="string"), collectionFormat="multi", default={"val1", "val2"}),
+     *      ),
+     *
      * @OA\Response(
      *         response=200,
      *         description="Список товаров успешно получен",
@@ -49,11 +82,56 @@ class ProductController extends Controller
      *
      * Получение списка товаров
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        return ProductResource::collection(Product::with('properties')->paginate(40));
+        $optionsFilter = $request->input('property');
+        $products0 = Product::addSelect('*')->where(function ($subQuery2) use ($optionsFilter) {
+
+            if (!empty($optionsFilter))
+                foreach ($optionsFilter as $optionName => $arValues) {
+
+                    $subQuery2->whereHas('properties', function ($query) use ($optionsFilter, $optionName, $arValues) {
+                        $query->where(function ($subQuery)
+                        use ($optionName, $arValues, $optionsFilter) {
+                            $subQuery->where('product_properties.name', $optionName);
+                            foreach ($arValues as $value) {
+                                $subQuery->where('product_property_product.value', $value);
+                            }
+                        });
+                    });
+                }
+        })
+//            ->addSelect('id')
+        ;
+        if ($request->input('responseType') == 'showSql') {
+            return response()->json(
+                $products0->toSql()
+            );
+        } else {
+            if ($request->input('responseType') == 'array_mini') {
+                return $this->typeMiniResponse($products0->get());
+            } else {
+                return response()->json(ProductResource::collection($products0->paginate(40)));
+            }
+        }
+    }
+
+
+    public function typeMiniResponse($data)
+    {
+        $pr = [];
+        foreach ($data as $p) {
+            $pr[$p->name] = '';
+            foreach ($p->properties as $o) {
+                $pr[$p->name] .= (!empty($pr[$p->name]) ? ' _ ' : '') . $o->name;
+                $pr[$p->name] .= ':' . $o->pivot->value;
+            }
+        }
+        $pr['count'] = sizeof($pr);
+        return response()->json($pr);
+
     }
 
     /**
@@ -61,7 +139,8 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public
+    function create()
     {
         //
     }
@@ -69,10 +148,11 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public
+    function store(Request $request)
     {
         //
     }
@@ -80,10 +160,11 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public
+    function show(Product $product)
     {
         //
     }
@@ -91,10 +172,11 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public
+    function edit(Product $product)
     {
         //
     }
@@ -102,11 +184,12 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public
+    function update(Request $request, Product $product)
     {
         //
     }
@@ -114,10 +197,11 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public
+    function destroy(Product $product)
     {
         //
     }

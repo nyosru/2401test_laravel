@@ -15,11 +15,20 @@ class ProductPropertySeeder extends Seeder
      */
     public function run()
     {
-        ProductProperty::factory(50)
-//            ->state(new Sequence(
-//                fn (Sequence $sequence) => ['ar_price_id' => ArPrice::all()->random()],
-//            ))
-            ->create();
+        ProductProperty::factory(1)
+            ->create(['name'=>'prop1']);
+
+        ProductProperty::factory(1)
+            ->create(['name'=>'prop2']);
+
+        ProductProperty::factory(1)
+            ->create(['name'=>'prop3']);
+
+//        ProductProperty::factory(50)
+////            ->state(new Sequence(
+////                fn (Sequence $sequence) => ['ar_price_id' => ArPrice::all()->random()],
+////            ))
+//            ->create();
 
 
 

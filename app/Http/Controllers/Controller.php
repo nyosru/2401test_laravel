@@ -9,6 +9,16 @@ use Illuminate\Routing\Controller as BaseController;
 
 
 /**
+ * @OA\Info(
+ *      title="API Documentation",
+ *      version="1.0",
+ *      description="Documentation for the API",
+ *      @OA\Contact(
+ *          email="support@api.com",
+ *          name="API Support"
+ *      )
+ *  )
+ *
  *  @OA\Schema(
  *      schema="Product",
  *      type="object",
@@ -24,7 +34,6 @@ use Illuminate\Routing\Controller as BaseController;
  *          ),
  *      }
  *  )
- * /
  *
  * @OA\Schema(
  *      schema="ProductOption",

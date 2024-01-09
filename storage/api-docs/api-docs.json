@@ -348,6 +348,21 @@
                 "operationId": "getProducts",
                 "parameters": [
                     {
+                        "name": "responseType",
+                        "in": "query",
+                        "description": "Поле с ограниченным набором значений",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json",
+                                "array_mini",
+                                "showSql"
+                            ]
+                        },
+                        "example": "json"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Номер страницы",
@@ -355,6 +370,70 @@
                             "type": "integer",
                             "format": "int32",
                             "default": 1
+                        }
+                    },
+                    {
+                        "name": "property[prop1][]",
+                        "in": "query",
+                        "description": "Свойства товара",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "collectionFormat": "multi",
+                            "default": [
+                                "val1",
+                                "val2"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "property[prop2][]",
+                        "in": "query",
+                        "description": "Свойства товара",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "collectionFormat": "multi",
+                            "default": [
+                                "val1",
+                                "val2"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "property[prop3][]",
+                        "in": "query",
+                        "description": "Свойства товара",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "collectionFormat": "multi",
+                            "default": [
+                                "val1",
+                                "val2"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "property[prop4][]",
+                        "in": "query",
+                        "description": "Свойства товара",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "collectionFormat": "multi",
+                            "default": [
+                                "val1",
+                                "val2"
+                            ]
                         }
                     }
                 ],
@@ -413,6 +492,42 @@
         }
     },
     "components": {
+        "schemas": {
+            "Product": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "options": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductOption"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ProductOption": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",

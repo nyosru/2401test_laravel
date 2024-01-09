@@ -15,7 +15,7 @@ class ProductPropertyFactory extends Factory
     {
         $faker = \Faker\Factory::create();
         return [
-            'name' => 'prop '.$faker->word()
+            'name' => 'prop'.rand(1,10)
         ];
     }
 }
