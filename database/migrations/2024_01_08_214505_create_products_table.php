@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
 
             $table->string('name');
             $table->float('price', 8, 2);
-            $table->integer('amount')->nullable();
+            $table->integer('quantity')->nullable();
 
             $table->timestamps();
         });

@@ -19,7 +19,7 @@ class ProductFactory extends Factory
         return [
             'name' => 'product '.$faker->word(),
             'price' => rand(1,33),
-            'amount' => rand(1,33),
+            'quantity' => rand(1,33),
         ];
     }
 }

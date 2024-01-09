@@ -77,12 +77,15 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $token = $user->createToken('MyApp')->accessToken;
+
+        //        dd($token);
+
         event(new Registered($user));
 
         Auth::login($user);
 
         // Генерация токена (при использовании пакета Passport)
-        $token = $user->createToken('MyApp')->accessToken->token;
 
         // Возвращение успешного ответа с токеном
 //        return $token;

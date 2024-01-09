@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Получение списка товаров
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return ProductResource::collection(Product::with('properties')->paginate(40));
     }
 
     /**
