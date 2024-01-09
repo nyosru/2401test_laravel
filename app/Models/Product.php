@@ -11,6 +11,8 @@ class Product extends Model
 
     public function properties()
     {
-        return $this->belongsToMany(ProductProperty::class, 'product_property_product')->withTimestamps();
+        return $this->belongsToMany(ProductProperty::class, 'product_property_product')
+            ->withTimestamps()
+            ->withPivot('value');
     }
 }

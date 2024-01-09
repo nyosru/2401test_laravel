@@ -20,6 +20,8 @@ class CreateProductProductPropertyTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('product_property_id');
 
+            $table->string('value')->nullable();
+
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('product_property_id')->references('id')->on('product_properties')->onDelete('cascade');
 
