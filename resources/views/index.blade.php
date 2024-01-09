@@ -33,11 +33,11 @@
         тест задание!
         <br/>
         <br/>
-        <A href="https://github.com/nyosru/2401test_laravel" target="_blank" >https://github.com/nyosru/2401test_laravel</A>
+        <A  style="color:blue; text-decoration: underline;" href="https://github.com/nyosru/2401test_laravel" target="_blank" >https://github.com/nyosru/2401test_laravel</A>
         <br/>
         <br/>
         свагер покликать >
-        <a href="https://test2401laravel-vitrin.php-cat.com/api/documentation" target="_blank" >test2401laravel-vitrin.php-cat.com/api/documentation</a>
+        <a  style="color:blue; text-decoration: underline;" href="https://test2401laravel-vitrin.php-cat.com/api/documentation" target="_blank" >test2401laravel-vitrin.php-cat.com/api/documentation</a>
         <br/>
         <br/>
         уделите внимание
