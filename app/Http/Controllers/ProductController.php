@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductResource;
-use App\Models\Product;
+use App\Http\Controllers\Service\ProductServiceController;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -86,123 +85,8 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $optionsFilter = $request->input('property');
-        $products0 = Product::addSelect('*')->where(function ($subQuery2) use ($optionsFilter) {
-
-            if (!empty($optionsFilter))
-                foreach ($optionsFilter as $optionName => $arValues) {
-
-                    $subQuery2->whereHas('properties', function ($query) use ($optionsFilter, $optionName, $arValues) {
-                        $query->where(function ($subQuery)
-                        use ($optionName, $arValues, $optionsFilter) {
-                            $subQuery->where('product_properties.name', $optionName);
-                            foreach ($arValues as $value) {
-                                $subQuery->where('product_property_product.value', $value);
-                            }
-                        });
-                    });
-                }
-        })
-//            ->addSelect('id')
-        ;
-        if ($request->input('responseType') == 'showSql') {
-            return response()->json(
-                $products0->toSql()
-            );
-        } else {
-            if ($request->input('responseType') == 'array_mini') {
-                return $this->typeMiniResponse($products0->get());
-            } else {
-                return response()->json(ProductResource::collection($products0->paginate(40)));
-            }
-        }
+        $products0 = ProductServiceController::getProduct($request);
+        return ProductServiceController::response($products0, $request->input('responseType', null));
     }
 
-
-    public function typeMiniResponse($data)
-    {
-        $pr = [];
-        foreach ($data as $p) {
-            $pr[$p->name] = '';
-            foreach ($p->properties as $o) {
-                $pr[$p->name] .= (!empty($pr[$p->name]) ? ' _ ' : '') . $o->name;
-                $pr[$p->name] .= ':' . $o->pivot->value;
-            }
-        }
-        $pr['count'] = sizeof($pr);
-        return response()->json($pr);
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public
-    function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public
-    function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Product $product
-     * @return \Illuminate\Http\Response
-     */
-    public
-    function show(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Product $product
-     * @return \Illuminate\Http\Response
-     */
-    public
-    function edit(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Product $product
-     * @return \Illuminate\Http\Response
-     */
-    public
-    function update(Request $request, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\Product $product
-     * @return \Illuminate\Http\Response
-     */
-    public
-    function destroy(Product $product)
-    {
-        //
-    }
 }
