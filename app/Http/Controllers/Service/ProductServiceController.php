@@ -68,7 +68,7 @@ class ProductServiceController extends Controller
                         });
                     });
                 }
-        })//            ->addSelect('id')
+        })
         ;
 
         return $products0;
